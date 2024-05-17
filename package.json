@@ -19,6 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "build:tailwind":"tailwind build src/styles.css -o src/tailwind.css",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -58,6 +59,7 @@
     "eslint-plugin-storybook": "^0.8.0",
     "prop-types": "^15.8.1",
     "storybook": "^8.0.10",
+    "tailwindcss": "^3.4.3",
     "webpack": "^5.91.0"
   }
 }
