@@ -2,59 +2,85 @@ import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 
-const ImageBlock = styled.div`
-`
-
-const Image = styled.img`
-    height: 200px;
-    width: 200px;
-    object-fit: cover;
-`
-
 const Main = styled.main`
-    padding: 20px 5px;
     display: flex;
     flex-direction: column;
     background-color: #222;
 `
 
 const ArticleLink = styled.a`
+    width: 100%;
+    height: 200px;
     display: flex;
     flex-direction: row;
     margin-bottom: 30px;
-    text-decoration: none;
-    color: #333;
     cursor: pointer;
-    overflow: hidden;
     height: 200px;
-    margin-right: 0;
     &:hover {
         box-shadow: 1px 1px 6px 1px #2F4F4F;
     }
 `
+const ImageBlock = styled.div`
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 15%;
+    width: 20%;
+    height: 200px;
+    object-fit: cover;
+    overflow: hidden;
+    margin-left: 10px;
+`
+
+const Image = styled.img`
+object-fit: contain;
+width: 150%;
+height: 100
+border-radius: 5px;
+flex: 1;
+    &:hover {
+        transform: scale(1.1);
+    }
+`
 
 const Overview = styled.div`
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     padding-top: 20px;
-    margin-left: 30px;
-    padding-right: 20px;
+    padding-left: 50px;
 `
 
 const Title = styled.label`
     font-size: 24px;
     cursor: pointer;
+    text-decoration: underline;
 `
 
-const Description = styled.p``
+const Description = styled.p`
+    font-size: 16px;
+    cursor: pointer;
+    color: #ccc;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 0;
+`
 
-const Articles = () => {
+
+
+const Articles = ({topic}) => {
     const [news, setNews] = useState([])
 
     useEffect(() => {
-        const url = `https://newsapi.org/v2/top-headlines?country=jp&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;
+        console.log('topic tag:', topic.tag)
 
+        const url = `https://newsapi.org/v2/top-headlines?country=jp&category=${topic.tag}&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`;
+        
+        console.log('url:', url)
+        //requestオブジェクトを作成
         let req = new Request(url)
+        //fetchメソッドでAPIを取得
         fetch(req)
         .then(res => res.json())
         .then(data => {
@@ -64,7 +90,7 @@ const Articles = () => {
                 console.error('Unexpected response from the API:', data)
             }
         })
-    }, [])
+    }, [setNews, topic]);
 
     return (   
         <div style={{padding: 0}}>
@@ -72,7 +98,7 @@ const Articles = () => {
                 {news.map((article, index) => (
                     <ArticleLink href={article.url} key={index}>
                         <ImageBlock>
-                            <Image src={article.urlToImage} alt={article.title} className='pl-0 pr-0 mr-0 ml-2 mt-0'/>
+                            <Image src={article.urlToImage} alt={article.title}/>
                         </ImageBlock>
                         <Overview  style={{width: 'fit-content'}}>
                             <Title className='text-white'>{article.title}</Title>
